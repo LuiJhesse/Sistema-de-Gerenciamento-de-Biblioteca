@@ -1,6 +1,6 @@
 package com.example.Gerenciador.de.Biblioteca.controllers;
 
-import com.example.Gerenciador.de.Biblioteca.dtos.UsuarioDto;
+import com.example.Gerenciador.de.Biblioteca.dtos.request.UsuarioRequest;
 import com.example.Gerenciador.de.Biblioteca.entities.Usuario;
 import com.example.Gerenciador.de.Biblioteca.services.UsuarioService;
 import org.springframework.http.ResponseEntity;
@@ -19,8 +19,8 @@ public class UsuarioController {
     }
 
     @PostMapping
-    public ResponseEntity<Usuario> cadastrar(@RequestBody UsuarioDto dto) {
-        return ResponseEntity.ok(service.cadastrarUsuario(dto));
+    public ResponseEntity<Usuario> cadastrar(@RequestBody UsuarioRequest request) {
+        return ResponseEntity.ok(service.cadastrarUsuario(request));
     }
 
     @GetMapping

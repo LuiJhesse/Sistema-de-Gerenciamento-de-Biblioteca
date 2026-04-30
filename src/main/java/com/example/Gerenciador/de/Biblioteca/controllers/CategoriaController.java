@@ -1,5 +1,6 @@
 package com.example.Gerenciador.de.Biblioteca.controllers;
 
+import com.example.Gerenciador.de.Biblioteca.dtos.request.CategoriaRequest;
 import com.example.Gerenciador.de.Biblioteca.entities.Categoria;
 import com.example.Gerenciador.de.Biblioteca.services.CategoriaService;
 import org.springframework.http.ResponseEntity;
@@ -18,8 +19,8 @@ public class CategoriaController {
     }
 
     @PostMapping
-    public ResponseEntity<Categoria> criar(@RequestBody Categoria categoria) {
-        return ResponseEntity.ok(service.salvar(categoria));
+    public ResponseEntity<Categoria> criar(@RequestBody CategoriaRequest request) {
+        return ResponseEntity.ok(service.salvar(request));
     }
 
     @GetMapping

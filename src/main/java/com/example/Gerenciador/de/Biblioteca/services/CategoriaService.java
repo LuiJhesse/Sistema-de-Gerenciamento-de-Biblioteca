@@ -1,5 +1,6 @@
 package com.example.Gerenciador.de.Biblioteca.services;
 
+import com.example.Gerenciador.de.Biblioteca.dtos.request.CategoriaRequest;
 import com.example.Gerenciador.de.Biblioteca.entities.Categoria;
 import com.example.Gerenciador.de.Biblioteca.repositories.CategoriaRepository;
 import org.springframework.stereotype.Service;
@@ -15,11 +16,15 @@ public class CategoriaService {
         this.repository = repository;
     }
 
-    public Categoria salvar(Categoria categoria) {
+    public Categoria salvar(CategoriaRequest categoriaRequest) {
 
-        if (categoria.getNome() == null || categoria.getNome().isBlank()) {
+        if (categoriaRequest.nome() == null || categoriaRequest.nome().isBlank()) {
             throw new RuntimeException("O nome da categoria é obrigatório.");
         }
+
+        Categoria categoria = new Categoria();
+        categoria.setNome(categoriaRequest.nome());
+        categoria.setDescricao(categoriaRequest.descricao());
 
         return repository.save(categoria);
     }

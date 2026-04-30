@@ -1,6 +1,5 @@
 package com.example.Gerenciador.de.Biblioteca.services;
-
-import com.example.Gerenciador.de.Biblioteca.dtos.Livrodto;
+import com.example.Gerenciador.de.Biblioteca.dtos.request.LivroRequest;
 import com.example.Gerenciador.de.Biblioteca.entities.Categoria;
 import com.example.Gerenciador.de.Biblioteca.entities.Livro;
 import com.example.Gerenciador.de.Biblioteca.repositories.CategoriaRepository;
@@ -21,41 +20,41 @@ public class LivroService {
         this.categoriaRepository = categoriaRepository;
     }
 
-    public Livro cadastrarLivro(Livrodto livroDto) {
+    public Livro cadastrarLivro(LivroRequest livroRequest) {
 
-        if (livroDto.titulo() == null || livroDto.titulo().isBlank()) {
+        if (livroRequest.titulo() == null || livroRequest.titulo().isBlank()) {
             throw new RuntimeException("O título do livro é obrigatório.");
         }
 
-        if (livroDto.autor() == null || livroDto.autor().isBlank()) {
+        if (livroRequest.autor() == null || livroRequest.autor().isBlank()) {
             throw new RuntimeException("O autor do livro é obrigatório.");
         }
 
-        Categoria categoria = categoriaRepository.findById(livroDto.categoriaId())
+        Categoria categoria = categoriaRepository.findById(livroRequest.categoriaId())
                 .orElseThrow(() -> new RuntimeException("Categoria não encontrada."));
 
         Optional<Livro> livroExistente =
                 repository.findByTituloAndEditora(
-                        livroDto.titulo(),
-                        livroDto.editora()
+                        livroRequest.titulo(),
+                        livroRequest.editora()
                 );
 
         if (livroExistente.isPresent()) {
             Livro livro = livroExistente.get();
 
             livro.setQuantidadeDisponivel(
-                    livro.getQuantidadeDisponivel() + livroDto.quantidadeDisponivel()
+                    livro.getQuantidadeDisponivel() + livroRequest.quantidadeDisponivel()
             );
 
             return repository.save(livro);
         }
 
         Livro novoLivro = new Livro();
-        novoLivro.setTitulo(livroDto.titulo());
-        novoLivro.setAutor(livroDto.autor());
-        novoLivro.setEditora(livroDto.editora());
-        novoLivro.setAnoPublicacao(livroDto.anoPublicacao());
-        novoLivro.setQuantidadeDisponivel(livroDto.quantidadeDisponivel());
+        novoLivro.setTitulo(livroRequest.titulo());
+        novoLivro.setAutor(livroRequest.autor());
+        novoLivro.setEditora(livroRequest.editora());
+        novoLivro.setAnoPublicacao(livroRequest.anoPublicacao());
+        novoLivro.setQuantidadeDisponivel(livroRequest.quantidadeDisponivel());
         novoLivro.setCategoria(categoria);
 
         return repository.save(novoLivro);

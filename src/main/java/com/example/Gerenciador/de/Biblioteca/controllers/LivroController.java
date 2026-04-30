@@ -1,6 +1,6 @@
 package com.example.Gerenciador.de.Biblioteca.controllers;
 
-import com.example.Gerenciador.de.Biblioteca.dtos.Livrodto;
+import com.example.Gerenciador.de.Biblioteca.dtos.request.LivroRequest;
 import com.example.Gerenciador.de.Biblioteca.entities.Livro;
 import com.example.Gerenciador.de.Biblioteca.services.LivroService;
 import org.springframework.http.ResponseEntity;
@@ -19,8 +19,8 @@ public class LivroController {
     }
 
     @PostMapping
-    public ResponseEntity<Livro> cadastrar(@RequestBody Livrodto dto) {
-        return ResponseEntity.ok(service.cadastrarLivro(dto));
+    public ResponseEntity<Livro> cadastrar(@RequestBody LivroRequest request) {
+        return ResponseEntity.ok(service.cadastrarLivro(request));
     }
 
     @GetMapping

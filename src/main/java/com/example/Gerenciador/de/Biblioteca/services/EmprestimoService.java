@@ -1,5 +1,6 @@
 package com.example.Gerenciador.de.Biblioteca.services;
 
+import com.example.Gerenciador.de.Biblioteca.dtos.request.EmprestimoRequest;
 import com.example.Gerenciador.de.Biblioteca.entities.Emprestimo;
 import com.example.Gerenciador.de.Biblioteca.entities.Livro;
 import com.example.Gerenciador.de.Biblioteca.entities.Usuario;
@@ -28,12 +29,12 @@ public class EmprestimoService {
         this.usuarioRepository = usuarioRepository;
     }
 
-    public Emprestimo realizarEmprestimo(Long usuarioId, Long livroId) {
+    public Emprestimo realizarEmprestimo(EmprestimoRequest emprestimoRequest) {
 
-        Usuario usuario = usuarioRepository.findById(usuarioId)
+        Usuario usuario = usuarioRepository.findById(emprestimoRequest.usuarioId())
                 .orElseThrow(() -> new RuntimeException("Usuário não encontrado."));
 
-        Livro livro = livroRepository.findById(livroId)
+        Livro livro = livroRepository.findById(emprestimoRequest.livroId())
                 .orElseThrow(() -> new RuntimeException("Livro não encontrado."));
 
         if (livro.getQuantidadeDisponivel() <= 0) {
@@ -50,7 +51,7 @@ public class EmprestimoService {
         emprestimo.setUsuario(usuario);
         emprestimo.setLivro(livro);
         emprestimo.setDataEmprestimo(LocalDate.now());
-        emprestimo.setDataDevolucaoPrevista(LocalDate.now().plusDays(7));
+        emprestimo.setDataDevolucaoPrevista(LocalDate.now().plusDays(31));
 
         return emprestimoRepository.save(emprestimo);
     }

@@ -1,6 +1,6 @@
 package com.example.Gerenciador.de.Biblioteca.services;
 
-import com.example.Gerenciador.de.Biblioteca.dtos.UsuarioDto;
+import com.example.Gerenciador.de.Biblioteca.dtos.request.UsuarioRequest;
 import com.example.Gerenciador.de.Biblioteca.entities.Usuario;
 import com.example.Gerenciador.de.Biblioteca.repositories.UsuarioRepository;
 import org.springframework.stereotype.Service;
@@ -17,33 +17,33 @@ public class UsuarioService {
         this.repository = repository;
     }
 
-    public Usuario cadastrarUsuario(UsuarioDto usuarioDto) {
+    public Usuario cadastrarUsuario(UsuarioRequest usuarioRequest) {
 
-        if (usuarioDto.nome() == null || usuarioDto.nome().isBlank()) {
+        if (usuarioRequest.nome() == null || usuarioRequest.nome().isBlank()) {
             throw new RuntimeException("O nome do usuário é obrigatório.");
         }
 
-        if (usuarioDto.email() == null || usuarioDto.email().isBlank()) {
+        if (usuarioRequest.email() == null || usuarioRequest.email().isBlank()) {
             throw new RuntimeException("O email do usuário é obrigatório.");
         }
 
-        if (usuarioDto.cpf() == null || usuarioDto.cpf().isBlank()) {
+        if (usuarioRequest.cpf() == null || usuarioRequest.cpf().isBlank()) {
             throw new RuntimeException("O CPF do usuário é obrigatório.");
         }
 
-        if (repository.findByEmail(usuarioDto.email()).isPresent()) {
+        if (repository.findByEmail(usuarioRequest.email()).isPresent()) {
             throw new RuntimeException("Já existe um usuário com esse email.");
         }
 
-        if (repository.findByCpf(usuarioDto.cpf()).isPresent()) {
+        if (repository.findByCpf(usuarioRequest.cpf()).isPresent()) {
             throw new RuntimeException("Já existe um usuário com esse CPF.");
         }
 
         Usuario usuario = new Usuario();
-        usuario.setNome(usuarioDto.nome());
-        usuario.setEmail(usuarioDto.email());
-        usuario.setCpf(usuarioDto.cpf());
-        usuario.setTelefone(usuarioDto.telefone());
+        usuario.setNome(usuarioRequest.nome());
+        usuario.setEmail(usuarioRequest.email());
+        usuario.setCpf(usuarioRequest.cpf());
+        usuario.setTelefone(usuarioRequest.telefone());
         usuario.setDataCadastro(LocalDate.now());
 
         return repository.save(usuario);
