@@ -8,6 +8,7 @@ import lombok.Setter;
 
 import java.time.LocalDate;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name ="emprestimo")
@@ -34,6 +35,10 @@ public class Emprestimo {
     @ManyToOne
     @JoinColumn(name = "livro_id")
     private Livro livro;
+
+    @OneToMany(mappedBy = "livro")
+    private List<Emprestimo> emprestimos;
+
 
 
 

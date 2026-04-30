@@ -25,6 +25,8 @@ public class Livro {
 
     private Integer quantidadeDisponivel;
 
+
+
     @ManyToOne
     @JoinColumn(name = "categoria_id")
     private Categoria categoria;
