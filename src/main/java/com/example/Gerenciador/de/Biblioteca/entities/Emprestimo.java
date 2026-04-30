@@ -36,8 +36,8 @@ public class Emprestimo {
     @JoinColumn(name = "livro_id")
     private Livro livro;
 
-    @OneToMany(mappedBy = "livro")
-    private List<Emprestimo> emprestimos;
+    @Enumerated(EnumType.STRING)
+    private StatusEmprestimo statusEmprestimo;
 
 
 

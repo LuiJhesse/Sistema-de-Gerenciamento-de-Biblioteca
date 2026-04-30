@@ -1,5 +1,6 @@
 package com.example.Gerenciador.de.Biblioteca.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -31,5 +32,6 @@ public class Usuario {
     private LocalDate dataCadastro;
 
     @OneToMany(mappedBy = "usuario")
+    @JsonIgnore
     private List<Emprestimo> emprestimos;
 }

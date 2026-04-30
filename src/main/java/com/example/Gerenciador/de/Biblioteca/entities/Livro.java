@@ -1,7 +1,10 @@
 package com.example.Gerenciador.de.Biblioteca.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
+
+import java.util.List;
 
 @Entity
 @Table(name = "livros")
@@ -30,6 +33,10 @@ public class Livro {
     @ManyToOne
     @JoinColumn(name = "categoria_id")
     private Categoria categoria;
+
+    @OneToMany(mappedBy = "livro")
+    @JsonIgnore
+    private List<Emprestimo> emprestimos;
 
     @Enumerated(EnumType.STRING)
     private Status status;

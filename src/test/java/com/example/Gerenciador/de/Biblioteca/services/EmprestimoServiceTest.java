@@ -1,5 +1,6 @@
 package com.example.Gerenciador.de.Biblioteca.services;
 
+import com.example.Gerenciador.de.Biblioteca.dtos.request.EmprestimoRequest;
 import com.example.Gerenciador.de.Biblioteca.entities.Emprestimo;
 import com.example.Gerenciador.de.Biblioteca.entities.Livro;
 import com.example.Gerenciador.de.Biblioteca.entities.Usuario;
@@ -47,7 +48,9 @@ class EmprestimoServiceTest {
         when(livroRepository.findById(1L)).thenReturn(Optional.of(livro));
         when(emprestimoRepository.save(any())).thenAnswer(i -> i.getArgument(0));
 
-        Emprestimo result = service.realizarEmprestimo(1L, 1L);
+        EmprestimoRequest request = new EmprestimoRequest(1L, 1L);
+
+        Emprestimo result = service.realizarEmprestimo(request);
 
         assertNotNull(result);
         assertEquals(4, livro.getQuantidadeDisponivel());

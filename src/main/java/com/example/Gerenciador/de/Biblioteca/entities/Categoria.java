@@ -1,5 +1,6 @@
 package com.example.Gerenciador.de.Biblioteca.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -25,5 +26,6 @@ public class Categoria {
     private String descricao;
 
     @OneToMany(mappedBy = "categoria")
+    @JsonIgnore
     private List<Livro> livros;
 }

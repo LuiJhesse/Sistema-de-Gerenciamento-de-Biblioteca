@@ -3,6 +3,7 @@ package com.example.Gerenciador.de.Biblioteca.services;
 import com.example.Gerenciador.de.Biblioteca.dtos.request.EmprestimoRequest;
 import com.example.Gerenciador.de.Biblioteca.entities.Emprestimo;
 import com.example.Gerenciador.de.Biblioteca.entities.Livro;
+import com.example.Gerenciador.de.Biblioteca.entities.StatusEmprestimo;
 import com.example.Gerenciador.de.Biblioteca.entities.Usuario;
 import com.example.Gerenciador.de.Biblioteca.repositories.EmprestimoRepository;
 import com.example.Gerenciador.de.Biblioteca.repositories.LivroRepository;
@@ -52,6 +53,7 @@ public class EmprestimoService {
         emprestimo.setLivro(livro);
         emprestimo.setDataEmprestimo(LocalDate.now());
         emprestimo.setDataDevolucaoPrevista(LocalDate.now().plusDays(31));
+        emprestimo.setStatusEmprestimo(StatusEmprestimo.EM_ANDAMENTO);
 
         return emprestimoRepository.save(emprestimo);
     }
@@ -64,10 +66,14 @@ public class EmprestimoService {
         return emprestimoRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Empréstimo não encontrado."));
     }
+    public boolean devolverLivro(Long emprestimoId) {
 
-    public void devolverLivro(Long emprestimoId) {
+        Emprestimo emprestimo = emprestimoRepository.findById(emprestimoId)
+                .orElseThrow(() -> new RuntimeException("Empréstimo não encontrado."));
 
-        Emprestimo emprestimo = buscarPorId(emprestimoId);
+        if (emprestimo.getDataDevolucaoReal() != null) {
+            return false;
+        }
 
         Livro livro = emprestimo.getLivro();
 
@@ -78,7 +84,23 @@ public class EmprestimoService {
         livroRepository.save(livro);
 
         emprestimo.setDataDevolucaoReal(LocalDate.now());
+        emprestimo.setStatusEmprestimo(StatusEmprestimo.DEVOLVIDO);
 
         emprestimoRepository.save(emprestimo);
+
+        return true;
+    }
+    public void verificarAtrasos() {
+        List<Emprestimo> emprestimos = emprestimoRepository.findAll();
+
+        for (Emprestimo emprestimo : emprestimos) {
+            if (
+                    emprestimo.getDataDevolucaoReal() == null &&
+                            LocalDate.now().isAfter(emprestimo.getDataDevolucaoPrevista())
+            ) {
+                emprestimo.setStatusEmprestimo(StatusEmprestimo.ATRASADO);
+                emprestimoRepository.save(emprestimo);
+            }
+        }
     }
 }
