@@ -1,10 +1,7 @@
 package com.example.Gerenciador.de.Biblioteca.services;
 
 import com.example.Gerenciador.de.Biblioteca.dtos.request.EmprestimoRequest;
-import com.example.Gerenciador.de.Biblioteca.entities.Emprestimo;
-import com.example.Gerenciador.de.Biblioteca.entities.Livro;
-import com.example.Gerenciador.de.Biblioteca.entities.StatusEmprestimo;
-import com.example.Gerenciador.de.Biblioteca.entities.Usuario;
+import com.example.Gerenciador.de.Biblioteca.entities.*;
 import com.example.Gerenciador.de.Biblioteca.repositories.EmprestimoRepository;
 import com.example.Gerenciador.de.Biblioteca.repositories.LivroRepository;
 import com.example.Gerenciador.de.Biblioteca.repositories.UsuarioRepository;
@@ -45,6 +42,11 @@ public class EmprestimoService {
         livro.setQuantidadeDisponivel(
                 livro.getQuantidadeDisponivel() - 1
         );
+        if (livro.getQuantidadeDisponivel() <= 0) {
+            livro.setStatus(Status.EMPRESTADO);
+        } else {
+            livro.setStatus(Status.DISPONIVEL);
+        }
 
         livroRepository.save(livro);
 
@@ -80,6 +82,7 @@ public class EmprestimoService {
         livro.setQuantidadeDisponivel(
                 livro.getQuantidadeDisponivel() + 1
         );
+        livro.setStatus(Status.DISPONIVEL);
 
         livroRepository.save(livro);
 
